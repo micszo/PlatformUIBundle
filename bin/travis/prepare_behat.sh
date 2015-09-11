@@ -75,6 +75,9 @@ mysql -uroot -e "CREATE DATABASE IF NOT EXISTS behattestdb; GRANT ALL ON behatte
 
 ./bin/.travis/prepare_selenium2.sh
 
+echo "> Disable strict host key checking for github.com to avoid faliures for testing"
+echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
 echo "> Modify composer.json to point to local checkout"
 sed -i '$d' composer.json
 echo ',    "repositories": [{"type":"git","url":"'$BRANCH_BUILD_DIR'"}]}' >> composer.json
