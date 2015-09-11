@@ -196,6 +196,7 @@ system:
                         - 'ez-actionbarview'
                         - 'ez-locationviewviewtabview'
                         - 'ez-locationviewdetailstabview'
+                        - 'ez-locationviewrelationstabview'
                         - 'ez-tabs'
                         - 'event-tap'
                         - 'array-extras'
@@ -219,6 +220,12 @@ system:
                 locationviewdetailstabview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/details.hbt
+                ez-locationviewrelationstabview:
+                    requires: ['ez-locationviewtabview', 'locationviewrelationstabview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewrelationstabview.js
+                locationviewrelationstabview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tabs/relations.hbt
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
