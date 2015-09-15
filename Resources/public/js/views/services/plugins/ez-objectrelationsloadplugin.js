@@ -2,38 +2,37 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-objectrelationlistloadplugin', function (Y) {
+YUI.add('ez-objectrelationsloadplugin', function (Y) {
     "use strict";
     /**
-     * Provides the object relation list load plugin
+     * Provides the object relations load plugin
      *
-     * @module ez-objectrelationlistloadplugin
+     * @module ez-objectrelationsloadplugin
      */
     Y.namespace('eZ.Plugin');
 
     /**
-     * Object relation list load plugin. It sets an event handler to load contents
-     * in an object relation list field.
+     * Object relations load plugin. It sets an event handler to load related contents.
      *
      * @namespace eZ.Plugin
-     * @class ObjectRelationListLoad
+     * @class ObjectRelationsLoad
      * @constructor
      * @extends eZ.Plugin.ViewServiceBase
      */
-    Y.eZ.Plugin.ObjectRelationListLoad = Y.Base.create('objectRelationListFieldPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
+    Y.eZ.Plugin.ObjectRelationsLoad = Y.Base.create('objectRelationsPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
-            this.onHostEvent('*:loadFieldRelatedContents', this._loadFieldRelatedContents);
+            this.onHostEvent('*:loadObjectRelations', this._loadObjectRelations);
         },
 
         /**
          * Loads the related contents. Once this is done, it sets the contents in
-         * the `destinationContents` attribute of the event target.
+         * the `relatedContents` attribute of the event target.
          *
          * @protected
-         * @method _loadFieldRelatedContents
-         * @param {Object} e loadFieldRelatedContents event facade
+         * @method _loadObjectRelations
+         * @param {Object} e ObjectRelations event facade
          */
-        _loadFieldRelatedContents: function (e) {
+        _loadObjectRelations: function (e) {
             var Content = this.get('contentModelConstructor'),
                 loadOptions = {api: this.get('host').get('capi')},
                 relatedContentListArray = [],
@@ -57,13 +56,13 @@ YUI.add('ez-objectrelationlistloadplugin', function (Y) {
 
             stack.done(function () {
                 e.target.setAttrs({
-                    destinationContents: relatedContentListArray,
+                    relatedContents: relatedContentListArray,
                     loadingError: (relatedContentListArray.length != contentDestinations.length),
                 });
             });
         },
     }, {
-        NS: 'objectRelationListLoad',
+        NS: 'objectRelationsLoad',
 
         ATTRS: {
             /**
@@ -79,6 +78,6 @@ YUI.add('ez-objectrelationlistloadplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ObjectRelationListLoad, ['locationViewViewService', 'contentEditViewService']
+        Y.eZ.Plugin.ObjectRelationsLoad, ['locationViewViewService', 'contentEditViewService']
     );
 });
