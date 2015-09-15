@@ -434,6 +434,10 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 this.relationAttribute1.concat(this.relationsAttribute2), "ATTRIBUTE"
             );
         },
+
+        "Should return all relations (without a type and a field identifier)": function () {
+            this._testRelations(this.relations);
+        },
     });
 
     copyTest = new Y.Test.Case({

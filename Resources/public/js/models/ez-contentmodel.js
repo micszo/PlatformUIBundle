@@ -166,6 +166,8 @@ YUI.add('ez-contentmodel', function (Y) {
          * Filters the relations on this content by type or optionally by field
          * definition identifier.
          *
+         * Not specifying `type` and `fieldDefinitionIdentifier` will return all relations
+         *
          * @method relations
          * @param {String} type of the relation ('ATTRIBUTE', 'COMMON', 'EMBED', 'LINK')
          * @param {String} [fieldDefinitionIdentifier]
@@ -173,16 +175,20 @@ YUI.add('ez-contentmodel', function (Y) {
          */
         relations: function (type, fieldDefinitionIdentifier) {
             var relations,
-                fieldDefFilter = (typeof fieldDefinitionIdentifier !== "undefined");
+                fieldDefFilter = (typeof fieldDefinitionIdentifier !== "undefined"),
+                relationType = (typeof type !== "undefined");
 
             relations = Y.Array.filter(this.get('relations'), function (relation) {
                 if (
                     fieldDefFilter
+                    && relationType
                     && type === relation.type
                     && fieldDefinitionIdentifier === relation.fieldDefinitionIdentifier
                 ) {
                     return true;
-                } else if ( !fieldDefFilter && type === relation.type ) {
+                } else if ( !fieldDefFilter && relationType &&  type === relation.type ) {
+                    return true;
+                } else if ( !fieldDefFilter && !relationType ) {
                     return true;
                 }
                 return false;
