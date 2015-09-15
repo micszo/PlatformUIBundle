@@ -87,7 +87,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire(
                 'whatever:loadObjectRelations',
-                {fieldDefinitionIdentifier: that.fieldDefId}
+                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
             );
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
@@ -123,7 +123,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire(
                 'whatever:loadObjectRelations',
-                {fieldDefinitionIdentifier: that.fieldDefId}
+                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
             );
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
@@ -152,7 +152,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire(
                 'whatever:loadObjectRelations',
-                {fieldDefinitionIdentifier: that.fieldDefId}
+                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
             );
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');

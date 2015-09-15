@@ -38,7 +38,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 relatedContentListArray = [],
                 stack = new Y.Parallel(),
                 contentDestinations = this.get('host').get('content').relations(
-                    'ATTRIBUTE', e.fieldDefinitionIdentifier
+                    e.relationType, e.fieldDefinitionIdentifier
                 );
 
             Y.Array.each(contentDestinations, function (value) {
