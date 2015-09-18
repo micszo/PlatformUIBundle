@@ -37,6 +37,8 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 loadOptions = {api: this.get('host').get('capi')},
                 relatedContentListArray = [],
                 stack = new Y.Parallel(),
+                loadedRelation = [],
+                loadingError = false,
                 contentDestinations = this.get('host').get('content').relations(
                     e.relationType, e.fieldDefinitionIdentifier
                 );
@@ -48,8 +50,12 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 actualRelatedContent.load(loadOptions, stack.add(function (error) {
                     if (error) {
                         e.target.set("loadingError", true);
+                        loadingError = true;
                     } else {
-                        relatedContentListArray.push(actualRelatedContent);
+                        if(loadedRelation.indexOf(value.destination) === -1) {
+                            loadedRelation.push(value.destination);
+                            relatedContentListArray.push(actualRelatedContent);
+                        }
                     }
                 }));
             });
@@ -57,7 +63,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
             stack.done(function () {
                 e.target.setAttrs({
                     relatedContents: relatedContentListArray,
-                    loadingError: (relatedContentListArray.length != contentDestinations.length),
+                    loadingError: loadingError,
                 });
             });
         },

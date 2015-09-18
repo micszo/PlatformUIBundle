@@ -19,76 +19,68 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
      * @constructor
      * @extends eZ.LocationViewTabView
      */
-    Y.eZ.LocationViewRelationsTabView = Y.Base.create('locationViewRelationsTabView', Y.eZ.LocationViewTabView, [/*Y.eZ.AsynchronousView*/], {
+    Y.eZ.LocationViewRelationsTabView = Y.Base.create('locationViewRelationsTabView', Y.eZ.LocationViewTabView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            //this._fireMethod = this._fireLoadUser;
-            //
+            this._fireMethod = this._fireLoadObjectRelations;
+            this._watchAttribute = 'relatedContents';
+
+            //TODO when adding the second list (reverse relation) remove the watch attribute
             //this.after(['creatorChange', 'ownerChange'], function (e) {
             //    this.render();
             //});
         },
-        //
+
         render: function () {
-            //var container = this.get('container'),
-            //    content = this.get('content'),
-            //    currentVersion = content.get('currentVersion'),
-            //    translationsList = currentVersion.getTranslationsList(),
-            //    creator = null,
-            //    owner = null;
-            //
-            //if (this.get('creator')) {
-            //    creator=this.get('creator').toJSON();
-            //}
-            //
-            //if (this.get('owner')) {
-            //    owner=this.get('owner').toJSON();
-            //}
-            //
-            //container.setHTML(this.template({
-            //    "content": content.toJSON(),
-            //    "location": this.get('location').toJSON(),
-            //    "currentVersion": currentVersion.toJSON(),
-            //    "lastContributor": creator,
-            //    "contentCreator": owner,
-            //    "translationsList": translationsList,
-            //    "languageCount": translationsList.length,
-            //    "loadingError": this.get('loadingError'),
-            //}));
+            var container = this.get('container'),
+                content = this.get('content'),
+                currentVersion = content.get('currentVersion'),
+                relatedContents = this._loadRelationListItems(this.get('relatedContents'));
+
+            //TODO cleanup attributes
+            container.setHTML(this.template({
+                //"content": content.toJSON(),
+                //"location": this.get('location').toJSON(),
+                //"currentVersion": currentVersion.toJSON(),
+                "relatedContents": relatedContents,
+                "loadingError": this.get('loadingError'),
+            }));
 
             return this;
         },
-        //
-        ///**
-        // * Fire the `loadUser` event
-        // * @method _fireLoadUser
-        // * @protected
-        // */
-        //_fireLoadUser: function () {
-        //    var creatorId = this.get('content').get('currentVersion').get('resources').Creator,
-        //        ownerId = this.get('content').get('resources').Owner;
-        //
-        //    /**
-        //     * Fired when the details view needs authors
-        //     * @event loadUser
-        //     * @param {String} userId Id of the author
-        //     * @param {String} attributeName Where to store the result
-        //     */
-        //    this.fire('loadUser', {
-        //        userId: creatorId,
-        //        attributeName: 'creator',
-        //    });
-        //
-        //    if (creatorId === ownerId) {
-        //        this.onceAfter('creatorChange', function (e) {
-        //            this.set('owner', this.get('creator'));
-        //        });
-        //    } else {
-        //        this.fire('loadUser', {
-        //            userId: ownerId,
-        //            attributeName: 'owner',
-        //        });
-        //    }
-        //},
+
+        //TODO comment
+        _lookupRelationInfo: function(contentId) {
+            return Y.Array.filter(this.get('content').get('relations'), function (relation) {
+                return contentId === relation.destination;
+            });
+        },
+
+        //TODO comment
+        _loadRelationListItems: function (relationList) {
+            var relationListToJSON = [],
+                that = this;
+
+            if (relationList){
+                Y.Array.each(relationList, function (value) {
+                    relationListToJSON.push({
+                        content: value.toJSON(),
+                        relationInfo: that._lookupRelationInfo(value.get('id'))
+                    });
+                });
+            }
+
+            return relationListToJSON;
+        },
+
+        /**
+         * Fire the `loadObjectRelations` event to retrieve the related contents
+         *
+         * @method _fireLoadObjectRelations
+         * @protected
+         */
+        _fireLoadObjectRelations: function () {
+            this.fire('loadObjectRelations', {});
+        },
     }, {
         ATTRS: {
             /**
@@ -117,21 +109,15 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
                 readOnly: true,
             },
 
-            ///**
-            // * The creator of the content
-            // *
-            // * @attribute creator
-            // * @type {Object}
-            // */
-            //creator: {},
-            //
-            ///**
-            // * The owner of the content
-            // *
-            // * @attribute owner
-            // * @type {Object}
-            // */
-            //owner: {},
+            /**
+             * The related contents of the content
+             *
+             * @attribute relatedContents
+             * @type Array
+             */
+            relatedContents: {
+                value: null,
+            },
 
             /**
              * The content being displayed

@@ -16,10 +16,12 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
             };
             this.destination1 = '/api/ezp/v2/content/objects/117';
             this.destination2 = '/api/ezp/v2/content/objects/118';
+            this.destination2Again = '/api/ezp/v2/content/objects/118';
             this.fieldDefId = 69;
             this.contentDestinations = [
                 {destination: this.destination1},
-                {destination: this.destination2}
+                {destination: this.destination2},
+                {destination: this.destination2Again}
             ];
 
             this.capi = {};
@@ -93,9 +95,9 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
 
             Assert.areEqual(
-                this.contentDestinations.length,
+                this.contentDestinations.length -1, //destination2 should be present only once
                 this.view.get('relatedContents').length,
-                'the view should have as many content as the related content'
+                'the view should have as many content as the related content minus the duplicate'
             );
 
             Y.Array.each(this.view.get('relatedContents'), function (value, i) {
