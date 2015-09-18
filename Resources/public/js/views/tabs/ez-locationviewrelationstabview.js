@@ -32,8 +32,8 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
 
         render: function () {
             var container = this.get('container'),
-                content = this.get('content'),
-                currentVersion = content.get('currentVersion'),
+                //content = this.get('content'),
+                //currentVersion = content.get('currentVersion'),
                 relatedContents = this._loadRelationListItems(this.get('relatedContents'));
 
             //TODO cleanup attributes

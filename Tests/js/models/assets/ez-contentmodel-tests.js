@@ -411,7 +411,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             );
 
             Y.Array.each(relations, function (relation, i) {
-                var elt = expected.shift();
+                var elt =  expected[i];
 
                 Y.Assert.areEqual(
                     elt.id,
