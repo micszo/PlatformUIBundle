@@ -14,20 +14,11 @@
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-list {
-    margin: 1em;
+    padding: 1em;
 }
 
-.ez-view-locationviewrelationstabview .ez-relations-value {
-    margin: 0;
-    box-sizing: border-box;
-    padding: 0.8em 0 0.8em 0.5em;
-    line-height: 1.4em;
-}
-
-.ez-view-locationviewrelationstabview .ez-relations-name {
-    box-sizing: border-box;
-    padding: 0.8em 0.5em 0.8em 0;
-    line-height: 1.4em;
+.ez-view-locationviewrelationstabview .ez-relations-box-table {
+    width: 100%;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-type-list {

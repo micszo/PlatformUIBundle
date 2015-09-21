@@ -5,28 +5,16 @@
 
 .ez-view-locationviewrelationstabview .ez-relations-box {
     border: 1px solid #ccc;
-    background: #F5F4F2;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-title {
-    background: #fff;
     font-size: 1.1em;
     font-weight: bold;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
 }
 
-.ez-view-locationviewrelationstabview .ez-relations-box-list {
-    background: #fff;
-    border: 1px solid #ccc;
+.ez-view-locationviewrelationstabview .ez-relations-box-table {
     box-shadow: 0 0 2px #ccc;
-}
-
-.ez-view-locationviewrelationstabview .ez-relations-name {
-    font-weight: bold;
-    text-align: right;
-    background: #fafafa;
-    color: #333;
-    border-right: 1px solid #ccc;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-type-list {
