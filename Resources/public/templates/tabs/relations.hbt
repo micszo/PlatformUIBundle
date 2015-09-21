@@ -1,8 +1,23 @@
-<div>
-    <h2>Related content</h2>
-    <ul>
-        {{#each relatedContents}}
-            <li>{{content.name}} {{#each relationInfo}} - {{type}}{{/each}}</li>
-        {{/each}}
-    </ul>
+<div class="ez-relations-box">
+    <h2 class="ez-relations-box-title">Related content</h2>
+    <dl class="ez-relations-box-list ez-asynchronousview pure-g">
+        {{#if loadingError}}
+            <p class="ez-asynchronousview-error ez-font-icon">
+                An error occurred while loading the related content list.
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                    Retry
+                </button>
+            </p>
+        {{else}}
+            {{#each relatedContents}}
+                <dt class="ez-relations-name pure-u-1-3">
+                    <a href="{{path "viewLocation" id=content.id languageCode=content.mainLanguageCode}}">{{content.name}}</a>
+                </dt>
+                <!--TODO format list-->
+                <dd class="ez-relations-value pure-u-2-3">
+                    <ul class="ez-relations-type-list">{{#each relationInfo}}<li class="ez-relations-type">{{type}}</li>{{/each}}</ul>
+                </dd>
+            {{/each}}
+        {{/if}}
+    </dl>
 </div>
