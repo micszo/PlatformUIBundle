@@ -344,7 +344,7 @@ YUI.add('ez-locationviewview', function (Y) {
                         }),
                         new Y.eZ.LocationViewRelationsTabView({
                             content: this.get('content'),
-                            location: this.get('location'),
+                            contentType: this.get('contentType'),
                             config: this.get('config'),
                             priority: 3000,
                             selected: false,

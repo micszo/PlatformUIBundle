@@ -189,7 +189,7 @@ YUI.add('ez-contentmodel', function (Y) {
                     && fieldDefinitionIdentifier === relation.fieldDefinitionIdentifier
                 ) {
                     return true;
-                } else if ( !fieldDefFilter &&  type === relation.type ) {
+                } else if ( !fieldDefFilter && type === relation.type ) {
                     return true;
                 }
                 return false;

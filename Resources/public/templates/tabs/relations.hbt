@@ -24,7 +24,13 @@
                     <a href="{{path "viewLocation" id=content.id languageCode=content.mainLanguageCode}}">{{content.name}}</a>
                 </td>
                 <td class="ez-relations-value">
-                    <ul class="ez-relations-type-list">{{#each relationInfo}}<li class="ez-relations-type">{{type}}</li>{{/each}}</ul>
+                    <ul class="ez-relations-type-list">
+                        {{#each relationInfo}}
+                            <li class="ez-relations-type">
+                                {{relationTypeName}}{{#if fieldDefinitionName}} ( {{fieldDefinitionName}} ){{/if}}
+                            </li>
+                        {{/each}}
+                    </ul>
                 </td>
             </tr>
             {{/each}}

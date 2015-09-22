@@ -23,24 +23,13 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
         initializer: function () {
             this._fireMethod = this._fireLoadObjectRelations;
             this._watchAttribute = 'relatedContents';
-
-            //TODO when adding the second list (reverse relation) remove the watch attribute
-            //this.after(['creatorChange', 'ownerChange'], function (e) {
-            //    this.render();
-            //});
         },
 
         render: function () {
             var container = this.get('container'),
-                //content = this.get('content'),
-                //currentVersion = content.get('currentVersion'),
-                relatedContents = this._loadRelationListItems(this.get('relatedContents'));
+                relatedContents = this._lookupRelationListItems(this.get('relatedContents'));
 
-            //TODO cleanup attributes
             container.setHTML(this.template({
-                //"content": content.toJSON(),
-                //"location": this.get('location').toJSON(),
-                //"currentVersion": currentVersion.toJSON(),
                 "relatedContents": relatedContents,
                 "loadingError": this.get('loadingError'),
             }));
@@ -48,23 +37,81 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
             return this;
         },
 
-        //TODO comment
-        _lookupRelationInfo: function(contentId) {
-            return Y.Array.filter(this.get('content').get('relations'), function (relation) {
-                return contentId === relation.destination;
-            });
+        /**
+         * Provides the name of the relation type based on its Id
+         *
+         * @method _lookupRelationTypeName
+         * @protected
+         * @param {String} relationTypeId
+         * @return {String}
+         */
+        _lookupRelationTypeName: function(relationTypeId) {
+            if (relationTypeId === "ATTRIBUTE") {
+                return "Attribute";
+            }else if (relationTypeId === "EMBED") {
+                return "Embed";
+            }else if (relationTypeId === "COMMON") {
+                return "Content level relation";
+            }else {
+                return "Unknown relation type";
+            }
         },
 
-        //TODO comment
-        _loadRelationListItems: function (relationList) {
+        /**
+         * Provides the relation information for a given content
+         *
+         * @method _lookupRelationInfo
+         * @protected
+         * @param {eZ.Content} content
+         * @return {Array} of Relations struct:
+         *              struct.relationTypeName: Ready to be displayed name of the relation type
+         *              struct.fieldDefinitionName: Name of the field definition if any ("" if none)
+         */
+        _lookupRelationInfo: function(content) {
+            var relationInfo = [],
+                that = this,
+                contentType = this.get('contentType'),
+                fieldDefinitions = contentType.get('fieldDefinitions'),
+                fieldDefinitionName;
+
+            Y.Array.each(this.get('content').get('relations'), function (relation) {
+                if (content.get('id') === relation.destination) {
+                    fieldDefinitionName = "";
+
+                    if (relation.type === 'ATTRIBUTE') {
+                        fieldDefinitionName = fieldDefinitions[relation.fieldDefinitionIdentifier].names[content.get('mainLanguageCode')];
+                    }
+
+                    relationInfo.push({
+                        relationTypeName: that._lookupRelationTypeName(relation.type),
+                        fieldDefinitionName: fieldDefinitionName,
+                    });
+                }
+            });
+
+            return relationInfo;
+        },
+
+        /**
+         * Provides items for the relation list
+         *
+         * @method _lookupRelationListItems
+         * @protected
+         * @param {ez.Content[]} relationList List of related content
+         * @return {Array} of RelationsListItems struct:
+         *              struct.content: JSONified related content
+         *              struct.relationInfo.relationTypeName: Ready to be displayed name of the relation type
+         *              struct.relationInfo.fieldDefinitionName: Name of the field definition if any ("" if none)
+         */
+        _lookupRelationListItems: function (relationList) {
             var relationListToJSON = [],
                 that = this;
 
             if (relationList){
-                Y.Array.each(relationList, function (value) {
+                Y.Array.each(relationList, function (content) {
                     relationListToJSON.push({
-                        content: value.toJSON(),
-                        relationInfo: that._lookupRelationInfo(value.get('id'))
+                        content: content.toJSON(),
+                        relationInfo: that._lookupRelationInfo(content),
                     });
                 });
             }
@@ -120,6 +167,17 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
             },
 
             /**
+             * The content type of the content being displayed
+             *
+             * @attribute contentType
+             * @type {eZ.ContentType}
+             * @writeOnce
+             */
+            contentType: {
+                writeOnce: "initOnly",
+            },
+
+            /**
              * The content being displayed
              *
              * @attribute content
@@ -127,17 +185,6 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
              * @writeOnce
              */
             content: {
-                writeOnce: 'initOnly',
-            },
-
-            /**
-             * The location being displayed
-             *
-             * @attribute location
-             * @type {eZ.Location}
-             * @writeOnce
-             */
-            location: {
                 writeOnce: 'initOnly',
             },
 
