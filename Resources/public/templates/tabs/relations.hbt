@@ -27,7 +27,7 @@
                     <ul class="ez-relations-type-list">
                         {{#each relationInfo}}
                             <li class="ez-relations-type">
-                                {{relationTypeName}}{{#if fieldDefinitionName}} ( {{fieldDefinitionName}} ){{/if}}
+                                {{relationTypeName}}{{#if fieldDefinitionName}} ({{fieldDefinitionName}}){{/if}}
                             </li>
                         {{/each}}
                     </ul>
